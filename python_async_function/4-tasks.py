@@ -9,7 +9,7 @@ task_wait_random = __import__('3-tasks').task_wait_random
 
 async def task_wait_n(n: int, max_delay: int) -> List[float]:
     """
-    Run task_wait_random n times concurrently with max_delay and return
+    Run task_wait_random n times concurrently  with max_delay and return
     list of delays in ascending order without using sort().
 
     Args:
