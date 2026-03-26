@@ -1,21 +1,17 @@
-#!/usr/bin/env python3
-"""Measure runtime of 10 async_generator executions concurrently."""
-
-import asyncio
-import time
-from typing import List
-async_generator = __import__('0-async_generator').async_generator
-
-
 async def measure_runtime() -> float:
-    """Run async_generator 10 times concurrently and measure runtime."""
-    start = time.time()
+    """
+    Measure the total runtime of executing async_comprehension
+    four times in parallel using asyncio.gather.
 
-    # Create 10 coroutines (one per async_generator call)
-    coroutines: List[asyncio.Task] = [async_generator() for _ in range(10)]
-
-    # Run them concurrently using gather
-    results = await asyncio.gather(*coroutines)
-
-    end = time.time()
+    Returns:
+        float: Total runtime in seconds.
+    """
+    start = time.perf_counter()  # Start timer
+    await asyncio.gather(
+        async_comprehension(),
+        async_comprehension(),
+        async_comprehension(),
+        async_comprehension()
+    )
+    end = time.perf_counter()  # End timer
     return end - start
