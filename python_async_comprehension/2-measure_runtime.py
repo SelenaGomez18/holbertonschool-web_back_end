@@ -12,7 +12,7 @@ async def measure_runtime() -> float:
     Execute async_comprehension four times in parallel and measure runtime.
 
     Returns:
-        float: total execution time in seconds
+        float: total execution time in secondss
     """
     start = time.perf_counter()
 
