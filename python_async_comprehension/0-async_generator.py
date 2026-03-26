@@ -7,14 +7,9 @@ from typing import AsyncGenerator
 
 
 async def async_generator() -> AsyncGenerator[float, None]:
-    """
-    Asynchronous generator that yields random numbers.
+    """Asynchronously yields 10 random numbers between 0 and 10.
 
-    The coroutine loops 10 times, waits 1 second asynchronously
-    each time, and yields a random float between 0 and 10.
-
-    Yields:
-        float: random number between 0 and 10
+    Each number is generated after awaiting for 1 second.
     """
     for _ in range(10):
         await asyncio.sleep(1)
