@@ -13,17 +13,17 @@ async def wait_n(n: int, max_delay: int) -> List[float]:
 
     Args:
         n (int): Number of coroutines to run.
-        max_delay (int): Maximum delay value.
+        max_delay (int): Maximum delay.
 
     Returns:
         List[float]: List of delays in ascending order.
     """
     delays: List[float] = []
 
-    tasks = [asyncio.create_task(wait_random(max_delay)) for _ in range(n)]
+    coroutines = [wait_random(max_delay) for _ in range(n)]
 
-    for task in asyncio.as_completed(tasks):
-        result = await task
+    for coro in asyncio.as_completed(coroutines):
+        result = await coro
         delays.append(result)
 
     return delays
