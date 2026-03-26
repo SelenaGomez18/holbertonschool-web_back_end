@@ -1,24 +1,39 @@
 #!/usr/bin/env python3
 """
-Module defining an asynchronous generator that produces 10 random numbers
-between 0 and 10, waiting 1 second between each generation.
+Module to measure the runtime of executing async_comprehension
+four times in parallel using asyncio.gather.
 """
 
 import asyncio
-import random
-from typing import AsyncGenerator
+import time
+from typing import Coroutine
+
+# Import the async_comprehension coroutine from the previous file
+async_comprehension = __import__('1-async_comprehension').async_comprehension
 
 
-async def async_generator() -> AsyncGenerator[float, None]:
+async def measure_runtime() -> float:
     """
-    Generate 10 random numbers asynchronously, one per second.
+    Measure the total runtime of executing async_comprehension
+    four times in parallel.
 
-    This asynchronous generator loops 10 times, waits 1 second
-    in each iteration, and yields a random float between 0 and 10.
+    Uses asyncio.gather to run the coroutines concurrently and
+    measures the total elapsed time.
 
-    Yields:
-        float: A random number between 0 and 10.
+    Returns:
+        float: Total runtime in seconds.
     """
-    for _ in range(10):
-        await asyncio.sleep(1)  # Asynchronously wait 1 second
-        yield random.uniform(0, 10)  # Yield a random number between 0 and 10
+    start_time = time.perf_counter()  # Start timer
+
+    # Run four async_comprehension coroutines concurrently
+    await asyncio.gather(
+        async_comprehension(),
+        async_comprehension(),
+        async_comprehension(),
+        async_comprehension()
+    )
+
+    end_time = time.perf_counter()  # End timer
+    total_time = end_time - start_time
+
+    return total_time
