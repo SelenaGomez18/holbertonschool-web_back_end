@@ -55,7 +55,9 @@ class Server:
         next_index = index
 
         # collect page_size items skipping missing indexes
-        while len(data) < page_size:
+        max_index = max(dataset.keys())
+
+        while len(data) < page_size and next_index <= max_index:
             if next_index in dataset:
                 data.append(dataset[next_index])
             next_index += 1
