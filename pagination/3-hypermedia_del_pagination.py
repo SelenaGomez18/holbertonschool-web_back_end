@@ -11,7 +11,6 @@ from typing import List, Dict
 class Server:
     """Server class to paginate a database of popular baby names.
     """
-
     DATA_FILE = "Popular_Baby_Names.csv"
 
     def __init__(self):
@@ -34,37 +33,30 @@ class Server:
         """
         if self.__indexed_dataset is None:
             dataset = self.dataset()
-            truncated_dataset = dataset[:1000]
             self.__indexed_dataset = {
                 i: dataset[i] for i in range(len(dataset))
             }
         return self.__indexed_dataset
 
-    def get_hyper_index(self, index: int = None,
-                        page_size: int = 10) -> Dict:
-        """Return deletion-resilient hypermedia pagination
+    def get_hyper_index(self, index: int = None, page_size: int = 10) -> Dict:
         """
-        dataset = self.indexed_dataset()
+        Returns a dictionary with pagination data, resilient to deletions.
+        """
+        assert index is not None and 0 <= index < len(self.indexed_dataset())
 
-        if index is None:
-            index = 0
-
-        assert isinstance(index, int) and index >= 0 and index < len(dataset)
-
+        indexed_data = self.indexed_dataset()
         data = []
-        next_index = index
+        current_index = index
 
-        # collect page_size items skipping missing indexes
-        max_index = max(dataset.keys())
-
-        while len(data) < page_size and next_index <= max_index:
-            if next_index in dataset:
-                data.append(dataset[next_index])
-            next_index += 1
+        while len(data) < page_size and current_index < len(indexed_data):
+            item = indexed_data.get(current_index)
+            if item is not None:
+                data.append(item)
+            current_index += 1
 
         return {
-            "index": index,
-            "data": data,
-            "page_size": len(data),
-            "next_index": next_index
+            'index': index,
+            'next_index': current_index,
+            'page_size': len(data),
+            'data': data
         }
