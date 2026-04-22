@@ -24,12 +24,10 @@ export default class Pricing {
     this._currency = value;
   }
 
-  // Método para mostrar el precio completo
   displayFullPrice() {
     return `${this._amount} ${this._currency.name} (${this._currency.code})`;
   }
 
-  // Método estático para convertir precios
   static convertPrice(amount, conversionRate) {
     return amount * conversionRate;
   }
