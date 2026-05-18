@@ -41,18 +41,13 @@ function countStudents(path) {
   });
 }
 
-// Create server
 const app = http.createServer((request, response) => {
   response.setHeader('Content-Type', 'text/plain');
 
-  // Home route
   if (request.url === '/') {
     response.statusCode = 200;
     response.end('Hello Holberton School!');
-  }
-
-  // Students route
-  else if (request.url === '/students') {
+  } else if (request.url === '/students') {
     response.statusCode = 200;
 
     countStudents(process.argv[2])
@@ -62,10 +57,12 @@ const app = http.createServer((request, response) => {
       .catch((error) => {
         response.end(`This is the list of our students\n${error.message}`);
       });
+  } else {
+    response.statusCode = 404;
+    response.end();
   }
 });
 
-// Listen on port 1245
 app.listen(1245);
 
 module.exports = app;
